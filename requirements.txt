@@ -1,0 +1,7 @@
+duckdb
+dbt-core==1.9
+dbt-duckdb
+dbt-coves
+pandas==2.2.2
+openpyxl
+astronomer-cosmos

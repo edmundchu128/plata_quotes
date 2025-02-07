@@ -1,0 +1,30 @@
+models:
+  - name: fact_quote
+    columns:
+      - name: quote_ref
+        description: "Unique key for quotes"
+        data_tests:
+          - unique
+          - not_null
+  - name: agg_customer
+    columns:
+      - name: agg_customer_skey
+        data_test:
+          - unique
+          - not_null
+
+unit_tests:
+  - name: test_first_ref
+    model: agg_customer
+    given:
+      - input: ref('fact_quote')
+        rows:
+          - {customer_ref: 123, brand: "A", loan_ref: "LOAN001", status: "Disbursed", type: "New", time: "2023-01-01T10:00:00", application_ref: "APP001"}
+          - {customer_ref: 123, brand: "A", loan_ref: "LOAN002", status: "Disbursed", type: "Repeat", time: "2023-02-01T10:00:00", application_ref: "APP002"}
+          - {customer_ref: 123, brand: "A", loan_ref: null, status: "Pending", type: "TopUp", time: "2023-03-01T10:00:00", application_ref: "APP003"}
+          - {customer_ref: 456, brand: "B", loan_ref: "LOAN003", status: "Disbursed", type: "New", time: "2023-01-01T11:00:00", application_ref: "APP004"}
+          - {customer_ref: 456, brand: "B", loan_ref: "LOAN004", status: "Disbursed", type: "TopUp", time: "2023-02-01T11:00:00", application_ref: "APP005"}
+    expect:
+      rows:
+        - {customer_ref: 123, brand: "A", new_loans_count: 1, repeat_loans_count: 1, topup_count: 0, first_application_ref: "APP001", first_loan_ref: "LOAN001"}
+        - {customer_ref: 456, brand: "B", new_loans_count: 1, repeat_loans_count: 0, topup_count: 1, first_application_ref: "APP004", first_loan_ref: "LOAN003"}
