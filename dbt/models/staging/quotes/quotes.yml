@@ -1,0 +1,26 @@
+sources:
+  - name: RAW
+    database: raw
+    description: RAW
+    schema: QUOTES
+    tables:
+      - name: QUOTES
+        freshness:
+          warn_after:
+            count: 1
+            period: day
+          error_after:
+            count: 2
+            period: day
+
+models:
+  - name: stg__quotes_quotes
+    description: ""
+    columns:
+      - name: quote_ref
+        description: "Unique key for quotes"
+        data_tests:
+          - unique
+          - not_null
+
+        

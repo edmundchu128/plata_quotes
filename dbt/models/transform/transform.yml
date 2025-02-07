@@ -1,0 +1,35 @@
+models:
+  - name: trans__quotes
+    description: "Transformation needed for fact_quotes."
+    columns:
+      - name: quote_ref
+        description: "Unique key for quotes"
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_ref
+      - name: application_ref
+      - name: loan_ref
+      - name: type
+      - name: previous_loan_ref
+      - name: income
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      - name: mortage
+      - name: bills
+      - name: postcode
+      - name: phone_number
+      - name: brand
+      - name: value
+      - name: term
+      - name: income_check_id
+      - name: income_check
+      - name: mortgage_check_id
+      - name: mortgage_check
+      - name: bills_check_id
+      - name: bills_check
+      - name: status
+      - name: time
+      - name: ingested_at
+      - name: file_name

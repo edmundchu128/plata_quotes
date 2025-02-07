@@ -1,0 +1,7 @@
+profiles.*
+.env
+.venv
+*.db
+tmp
+.user.yml
+package-lock.yml
