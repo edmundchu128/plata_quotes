@@ -33,12 +33,16 @@ def read_excel(path:str, sheet_name = 0):
         quotes_df['file_name'] = path
         return quotes_df
 
-def load_to_db():
+def load_to_db(path:str, sheet_name=0):
     """
-    Currently hardcoded to one path
+    path: string, ROOT PATH + FILE NAME
+    sheet_name: defaults to 0, specify sheet name as string
+
+    Load to db helper function. Reads Excel and defaults to reading the first sheet.
+    Returns None
     """
 
-    quotes_df = read_excel(ROOT_PATH+FILE_NAME)
+    quotes_df = read_excel(path, sheet_name=sheet_name)
     
     conn = duckdb.connect(DUCKDB_PATH+'raw.db')
     
@@ -73,5 +77,6 @@ if __name__ == '__main__':
         logging.info('No new files.')
     
     logging.info('Begin file ingestion...')
-    load_to_db()
+    for file in new_files:
+        load_to_db(file)
     logging.info('Pipeline finished.')
